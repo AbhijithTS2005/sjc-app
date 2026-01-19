@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#8e44ad" rx="20"/>
+  <text x="100" y="70" font-size="28" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">ACBSP</text>
+  <text x="100" y="140" font-size="16" font-weight="bold" fill="#ecf0f1" text-anchor="middle" font-family="Arial">Accredited</text>
+</svg>

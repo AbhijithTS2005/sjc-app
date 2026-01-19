@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <rect width="1200" height="400" fill="#f0fdf4"/>
+  <g fill="#065f46">
+    <rect x="0" y="0" width="1200" height="120" fill="#065f46" opacity="0.06" />
+    <text x="60" y="220" font-size="48" font-family="Segoe UI, Arial" fill="#065f46">Department of MSW</text>
+    <text x="60" y="260" font-size="20" fill="#065f46">Social Work & Community Development</text>
+  </g>
+</svg>
