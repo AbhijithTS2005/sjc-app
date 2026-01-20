@@ -3,7 +3,7 @@ services:
     name: sjc-app
     plan: free
     runtime: php
-    buildCommand: composer install && php artisan key:generate && php artisan migrate --force
+    buildCommand: npm install && npm run build && composer install --optimize-autoloader --no-dev && php artisan migrate --force
     startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
     envVars:
       - key: APP_ENV
@@ -18,8 +18,15 @@ services:
         value: file
       - key: SESSION_DRIVER
         value: file
+      - key: APP_KEY
+        generateValue: true
 
   - type: mysql
     name: sjc-db
     plan: free
     ipAddress: true
+    envVars:
+      - key: MYSQL_DATABASE
+        value: sjc_db
+      - key: MYSQL_USER
+        value: sjc_user
