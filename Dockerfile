@@ -41,11 +41,16 @@ RUN npm install && npm run build
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Configure Apache
+# Configure Apache to use Laravel public directory
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN echo '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>' >> /etc/apache2/apache2.conf
+
+# Copy and set permissions for entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Expose port
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Use entrypoint for Laravel setup
+ENTRYPOINT ["docker-entrypoint.sh"]
