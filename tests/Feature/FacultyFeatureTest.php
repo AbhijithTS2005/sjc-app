@@ -82,8 +82,6 @@ class FacultyFeatureTest extends TestCase
             'name' => 'Prof Full',
             'department' => 'commerce',
             'designation' => 'Associate Professor'
-            'degree' => 'B.Tech',
-            'masters' => 'M.Tech',
             'experience_years' => 12,
             'qualification' => 'B.Tech, M.Tech, PhD',
             'area_of_interest' => 'AI, ML, Systems',

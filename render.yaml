@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: sjc-app
+    plan: free
+    runtime: php
+    buildCommand: composer install && php artisan key:generate && php artisan migrate --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_NAME
+        value: "St. Joseph's College"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: CACHE_STORE
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+
+  - type: mysql
+    name: sjc-db
+    plan: free
+    ipAddress: true
