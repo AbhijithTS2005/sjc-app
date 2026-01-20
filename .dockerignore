@@ -1,0 +1,36 @@
+# Git files
+.git
+.gitignore
+
+# Dependencies installed during build
+vendor
+node_modules
+
+# Local environment files (use Render env vars instead)
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+tests
+phpunit.xml
+
+# Documentation
+*.md
+!README.md
+
+# Other
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
