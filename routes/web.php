@@ -20,11 +20,11 @@ use App\Http\Controllers\FacilitiesController;
 // Note: public/uploads/ is served directly, this is for storage/app/public/ fallback
 Route::get('/storage/{path}', function ($path) {
     $file = storage_path('app/public/' . $path);
-    
+
     if (!file_exists($file)) {
         abort(404);
     }
-    
+
     return response()->file($file);
 })->where('path', '.*')->name('storage.file');
 
@@ -129,9 +129,7 @@ Route::get('/Research/Seminars', function () {
 Route::get('/campus', [FacilitiesController::class, 'index'])->name('campus.facilities.index');
 Route::get('/campus/{facility}', [FacilitiesController::class, 'show'])->name('campus.facilities.show');
 
-// 5. Faculty Routes
-Route::get('/faculty/create', [FacultyController::class, 'create'])->name('faculty.create');
-Route::post('/faculty/store', [FacultyController::class, 'store'])->name('faculty.store');
+// Note: faculty.create and faculty.store are provided by the admin resource route below
 
 // Backward compatibility redirects - redirect old department slugs to new ones
 Route::redirect('/bcom/{path?}', '/commerce/{path?}');
@@ -148,7 +146,7 @@ Route::get('/{dept}/faculty/{faculty}', [FacultyController::class, 'show'])->nam
 
 // Admin routes for general faculty CRUD (requires auth)
 Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::resource('faculty', FacultyController::class)->except(['index','show']);
+    Route::resource('faculty', FacultyController::class)->except(['index', 'show']);
 });
 
 // Simple auth routes (login/logout) for apps without full scaffolding
@@ -277,7 +275,7 @@ Route::get('/api/news/latest', function () {
             ->orderBy('published_at', 'desc')
             ->limit(10)
             ->get()
-            ->map(function($article) {
+            ->map(function ($article) {
                 // Ensure image has correct path for API
                 $imagePath = $article->image;
                 if ($imagePath && !str_starts_with($imagePath, 'http') && !str_starts_with($imagePath, '/storage/')) {
@@ -298,14 +296,14 @@ Route::get('/api/news/latest', function () {
 // Admin Events Management Routes (requires auth)
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/faculty-dashboard', [FacultyController::class, 'adminDashboard'])->name('admin.faculty.dashboard');
-    
+
     // Test route to debug events
-    Route::get('/events-test', function() {
+    Route::get('/events-test', function () {
         $events = \App\Models\Event::orderBy('date', 'desc')->paginate(15);
         $totalEvents = \App\Models\Event::count();
         return view('admin.events.test-events', compact('events', 'totalEvents'));
     });
-    
+
     Route::resource('events', EventController::class)->except(['show']);
     Route::resource('news', NewsController::class);
 });
