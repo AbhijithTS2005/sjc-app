@@ -21,25 +21,22 @@ This guide outlines how to deploy the application to Render using the `render.ya
 The `render.yaml` automatically sets up the following services:
 
 - **Web Service**: `sjc-app` (Laravel Application)
-- **Database**: `sjc-db` (MySQL)
+- **Database**: `sjc-db` (PostgreSQL)
 
 ### Important Notes
 
 - **APP_KEY**: The `render.yaml` is configured to generate a secure `APP_KEY` automatically.
-- **Database Connection**: The web service will automatically try to connect to the database. However, you might need to ensure the Laravel `.env` variables map correctly if Render doesn't set standard `DB_` vars automatically from the blueprint linking.
-    - _Note_: Render Blueprints link services, but you may need to check the **Environment** tab of the Web Service after creation to verify `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` are populated. The `render.yaml` we created sets up the DB with specific user/db names, so Laravel needs those.
+- **Database Connection**: The web service is configured to automatically connect to the PostgreSQL database.
+    - It uses `DB_CONNECTION: pgsql`
+    - It pulls the connection details (Host, Database, User, Password) directly from the `sjc-db` service variables.
 
     The `render.yaml` defines:
-    - `MYSQL_DATABASE`: `sjc_db`
-    - `MYSQL_USER`: `sjc_user`
-
-    You may need to manually add these to the **Web Service** environment variables if they are not automatically exposed:
-    - `DB_HOST`: `sjc-db` (The name of the database service)
-    - `DB_DATABASE`: `sjc_db`
-    - `DB_USERNAME`: `sjc_user`
-    - `DB_PASSWORD`: (Find this in the Database service settings/env vars)
+    - `POSTGRES_DB`: `sjc_db`
+    - `POSTGRES_USER`: `sjc_user`
 
 ## Troubleshooting
 
 - **Build Failures**: Check the logs. Common issues are missing dependencies in `package.json` or `composer.json`.
-- **500 Error**: Usually valid `APP_KEY` or Database connection issues. Check lines in logs.
+- **500 Error**:
+    - Check if the database migration ran successfully (`php artisan migrate --force` in Build Command).
+    - Verify `DB_CONNECTION` is `pgsql`.

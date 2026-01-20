@@ -20,13 +20,27 @@ services:
         value: file
       - key: APP_KEY
         generateValue: true
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: sjc-db
+          property: host
+      - key: DB_DATABASE
+        fromDatabase:
+          name: sjc-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: sjc-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sjc-db
+          property: password
 
-  - type: mysql
-    name: sjc-db
+databases:
+  - name: sjc-db
     plan: free
-    ipAddress: true
-    envVars:
-      - key: MYSQL_DATABASE
-        value: sjc_db
-      - key: MYSQL_USER
-        value: sjc_user
+    databaseName: sjc_db
+    user: sjc_user
