@@ -4,6 +4,7 @@ services:
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
+    dockerCommand: bash -c "php artisan config:clear && php artisan migrate --force && apache2-foreground"
     envVars:
       - key: APP_ENV
         value: production

@@ -28,29 +28,37 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
-COPY . .
+# Copy composer files first for caching
+COPY composer.json composer.lock ./
 
 # Install PHP dependencies
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --optimize-autoloader --no-dev --no-scripts
 
-# Install Node dependencies and build assets
-RUN npm install && npm run build
+# Copy package files for npm
+COPY package.json package-lock.json* ./
+
+# Install Node dependencies
+RUN npm install
+
+# Copy all application files
+COPY . .
+
+# Run composer scripts now that all files are present
+RUN composer dump-autoload --optimize
+
+# Build frontend assets
+RUN npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Configure Apache to use Laravel public directory
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 RUN echo '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>' >> /etc/apache2/apache2.conf
 
-# Copy and set permissions for entrypoint script
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Expose port
+# Expose port 80
 EXPOSE 80
 
-# Use entrypoint for Laravel setup
-ENTRYPOINT ["docker-entrypoint.sh"]
+# Start Apache (migrations will be handled by render.yaml startCommand)
+CMD ["apache2-foreground"]
