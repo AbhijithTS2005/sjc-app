@@ -1,10 +1,9 @@
 services:
   - type: web
     name: sjc-app
+    runtime: docker
     plan: free
-    runtime: php
-    buildCommand: npm install && npm run build && composer install --optimize-autoloader --no-dev && php artisan migrate --force
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
         value: production
@@ -26,6 +25,10 @@ services:
         fromDatabase:
           name: sjc-db
           property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sjc-db
+          property: port
       - key: DB_DATABASE
         fromDatabase:
           name: sjc-db
