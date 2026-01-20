@@ -81,7 +81,7 @@ class FacultyFeatureTest extends TestCase
         $response = $this->post(route('faculty.store'), [
             'name' => 'Prof Full',
             'department' => 'commerce',
-            'designation' => 'Associate Professor'
+            'designation' => 'Associate Professor',
             'experience_years' => 12,
             'qualification' => 'B.Tech, M.Tech, PhD',
             'area_of_interest' => 'AI, ML, Systems',
