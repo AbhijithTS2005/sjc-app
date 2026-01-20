@@ -20,7 +20,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Enable Apache mod_rewrite
-RUN a]2enmod rewrite
+RUN a2enmod rewrite
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
